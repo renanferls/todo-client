@@ -1,39 +1,30 @@
 import React, { useState } from "react";
-
 import "./TaskForm.css";
 
-const TaskForm = ({ setTasks }) => {
+const TaskForm = ({ createTask}) => {
   const [taskData, setTaskData] = useState({
-    task: "",
-    status: "todo",
+    title: "",
+    current_state: "TODO",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    setTaskData((prev) => {
-      return { ...prev, [name]: value };
-    });
+    setTaskData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(taskData);
-    setTasks((prev) => {
-      return [...prev, taskData];
-    });
-    setTaskData({
-      task: "",
-      status: "todo",
-    });
+    createTask(taskData);
+    setTaskData({ title: "", current_state: "TODO" });
   };
+
   return (
     <header className="app_header">
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          name="task"
-          value={taskData.task}
+          name="title"
+          value={taskData.title}
           className="task_input"
           placeholder="Enter your task name"
           onChange={handleChange}
@@ -43,14 +34,14 @@ const TaskForm = ({ setTasks }) => {
         <div className="task_form_bottom_line">
           <div>
             <select
-              name="status"
-              value={taskData.status}
+              name="current_state"
+              value={taskData.current_state}
               className="task_status"
               onChange={handleChange}
             >
-              <option value="todo">To Do</option>
-              <option value="doing">Doing</option>
-              <option value="done">Done</option>
+              <option value="TODO">To Do</option>
+              <option value="INPROGRESS">Doing</option>
+              <option value="DONE">Done</option>
             </select>
             <button type="submit" className="task_submit">
               + Add Task
